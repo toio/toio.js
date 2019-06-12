@@ -29,5 +29,8 @@
   },
   "dependencies": {
     "noble-mac": "Timeular/noble-mac"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
