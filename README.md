@@ -2,6 +2,26 @@
 
 Library for controlling toio&trade;Core Cube using Node.js
 
+```js
+const { NearestScanner } = require('@toio/scanner')
+
+async function main() {
+  // start a scanner to find the nearest cube
+  const cube = await new NearestScanner().start()
+
+  // connect to the cube
+  await cube.connect()
+
+  // move cube
+  cube.move(100, 100, 1000)
+  //         |    |     `--- duration [ms]
+  //         |    `--------- right motor speed
+  //          `------------- left motor speed
+}
+
+main()
+```
+
 - [API reference document](https://toio.github.io/toio.js/)
 - [toio&trade;Core Cube technical specification](https://toio.github.io/toio-spec/)
 
