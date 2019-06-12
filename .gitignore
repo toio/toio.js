@@ -1,0 +1,14 @@
+# node & yarn
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# lerna
+lerna-debug.log
+
+# typescript
+.tsbuildinfo
+
+# others
+packages/*/lib
+docs/

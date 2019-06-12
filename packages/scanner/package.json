@@ -1,0 +1,33 @@
+{
+  "name": "@toio/scanner",
+  "description": "",
+  "version": "0.0.0",
+  "author": "Sony Interactive Entertainment Inc.",
+  "keywords": [
+    "toio"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": "https://github.com/toio/toio.js",
+  "license": "MIT",
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "build": "tsc --project .",
+    "build:watch": "tsc --project . --watch",
+    "clean": "rimraf .tsbuildinfo lib/"
+  },
+  "devDependencies": {
+    "@types/noble": "^0.0.39",
+    "@types/noble-mac": "^0.0.1",
+    "@types/node": "^12.0.2",
+    "rimraf": "^2.6.3",
+    "typed-emitter": "^0.1.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "@toio/cube": "0.0.0",
+    "noble-mac": "Timeular/noble-mac"
+  }
+}

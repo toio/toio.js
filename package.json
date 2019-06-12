@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "name": "@toio/root",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "repository": "https://github.com/toio/toio.js",
+  "author": "Sony Interactive Entertainment Inc.",
+  "license": "MIT",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "build:watch": "lerna run build:watch --parallel",
+    "clean": "lerna run clean",
+    "docs": "typedoc packages/**/src",
+    "docs:clean": "rimraf docs",
+    "docs:serve": "yarn docs:clean && yarn docs && live-server docs",
+    "example:id-reader": "node examples/id-reader",
+    "example:keyboard-control": "node examples/keyboard-control",
+    "example:chase": "node examples/chase",
+    "lint": "eslint **/src/**/*.ts",
+    "release": "lerna publish from-package",
+    "test": "lerna run test",
+    "versionup": "lerna version --conventional-commits"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-header": "^3.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "lerna": "^3.14.1",
+    "live-server": "^1.2.1",
+    "prettier": "^1.17.1",
+    "rimraf": "^2.6.3",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-lerna-packages": "^0.1.5"
+  }
+}

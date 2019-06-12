@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Redirect output structure to the directory.
+    "outDir": "./lib",
+    // Specify file to store incremental compilation information
+    "tsBuildInfoFile": ".tsbuildinfo"
+  },
+  "include": ["./src/**/*"]
+}

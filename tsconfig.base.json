@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    // Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'.
+    "target": "es5",
+    // Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'.
+    "module": "commonjs",
+    // Specify library files to be included in the compilation.
+    // "lib": [],
+    // Generates corresponding '.d.ts' file.
+    "declaration": true,
+    // Generates corresponding '.map' file.
+    "sourceMap": true,
+    // Enable incremental compilation
+    "incremental": true,
+    // Do not emit comments to output.
+    "removeComments": true,
+
+    /* Strict Type-Checking Options */
+    // Enable all strict type-checking options.
+    "strict": true,
+
+    /* Additional Checks */
+    // Report errors on unused locals.
+    "noUnusedLocals": true,
+    // Report errors on unused parameters.
+    "noUnusedParameters": true,
+    // Report error when not all code paths in function return a value.
+    "noImplicitReturns": true,
+    // Report errors for fallthrough cases in switch statement.
+    "noFallthroughCasesInSwitch": true,
+
+    /* Module Resolution Options */
+    // Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "esModuleInterop": true
+  },
+  "exclude": ["node_modules"]
+}
