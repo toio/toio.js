@@ -47,10 +47,10 @@ Not verified yet, we are waiting for your report.
 
 ## :package: Packages
 
-| Package name  | Readme                                       | Description          |
-| ------------- | -------------------------------------------- | -------------------- |
-| @toio/scanner | [packages/scanner](./packages/scanner)       | Cube scanner         |
-| @toio/cube    | [packages/cube](./packages/device-core-cube) | Cube BLE API wrapper |
+| Package name  | Readme                                 | Description          |
+| ------------- | -------------------------------------- | -------------------- |
+| @toio/scanner | [packages/scanner](./packages/scanner) | Cube scanner         |
+| @toio/cube    | [packages/cube](./packages/cube)       | Cube BLE API wrapper |
 
 ## :video_game: Example
 
