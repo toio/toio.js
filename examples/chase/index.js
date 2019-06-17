@@ -25,7 +25,7 @@ function chase(jerryX, jerryY, tomX, tomY, tomAngle) {
   }
 
   const ratio = 1 - Math.abs(relAngle) / 90
-  let speed = 100
+  let speed = 80
   if (relAngle > 0) {
     return [speed, speed * ratio]
   } else {
