@@ -2,7 +2,7 @@
 
 a npm package for scanning toio&trade;Core Cube.
 
-- [@toio/scanner | API reference document](https://toio.github.io//toio.js/modules/scanner.html)
+- [@toio/scanner | API reference document](https://toio.github.io/toio.js/modules/_toio_scanner.html)
 - [toio&trade;Core Cube BLE technical specification](https://toio.github.io/toio-spec/)
 
 ## How to install
