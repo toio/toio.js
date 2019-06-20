@@ -25,7 +25,7 @@ function chase(jerryX, jerryY, tomX, tomY, tomAngle) {
   }
 
   const ratio = 1 - Math.abs(relAngle) / 90
-  let speed = 100
+  let speed = 80
   if (relAngle > 0) {
     return [speed, speed * ratio]
   } else {
@@ -44,7 +44,7 @@ async function main() {
   // set light color and store position
   let jerryX = 0
   let jerryY = 0
-  jerry.turnLightOn({ durationMs: 0, red: 255, green: 0, blue: 255 })
+  jerry.turnOnLight({ durationMs: 0, red: 255, green: 0, blue: 255 })
   jerry.on('id:position-id', data => {
     jerryX = data.x
     jerryY = data.y
@@ -54,7 +54,7 @@ async function main() {
   let tomX = 0
   let tomY = 0
   let tomAngle = 0
-  tom.turnLightOn({ durationMs: 0, red: 0, green: 255, blue: 255 })
+  tom.turnOnLight({ durationMs: 0, red: 0, green: 255, blue: 255 })
   tom.on('id:position-id', data => {
     tomX = data.x
     tomY = data.y
