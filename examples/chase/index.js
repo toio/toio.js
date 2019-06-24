@@ -37,7 +37,7 @@ async function main() {
   // start a scanner to find nearest two cubes
   const cubes = await new NearScanner(2).start()
 
-  // connect two cubes (jerry chases tom)
+  // connect two cubes (tom chases jerry)
   const jerry = await cubes[0].connect()
   const tom = await cubes[1].connect()
 
