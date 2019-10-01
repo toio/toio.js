@@ -35,12 +35,17 @@ export class ConfigurationCharacteristic {
 
   public getBLEProtocolVersion(): Promise<string> {
     // TODO: timeout
-    return new Promise(resolve => {
-      this.characteristic.subscribe()
-      this.characteristic.write(Buffer.from([0x01, 0x00]), false)
-      this.eventEmitter.once('configuration:ble-protocol-version', version => {
-        this.characteristic.unsubscribe()
-        resolve(version)
+    return new Promise((resolve, reject) => {
+      this.characteristic.subscribe(error => {
+        if (error) {
+          reject(error)
+        } else {
+          this.characteristic.write(Buffer.from([0x01, 0x00]), false)
+          this.eventEmitter.once('configuration:ble-protocol-version', version => {
+            this.characteristic.unsubscribe()
+            resolve(version)
+          })
+        }
       })
     })
   }
