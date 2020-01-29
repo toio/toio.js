@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Characteristic } from 'noble-mac'
+import { Characteristic } from '@abandonware/noble'
 import { SoundOperation, SoundSpec } from './specs/sound-spec'
 
 /**

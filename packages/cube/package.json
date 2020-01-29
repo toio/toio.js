@@ -28,7 +28,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "noble-mac": "Timeular/noble-mac"
+    "@abandonware/noble": "abandonware/noble#d0abbae6a5e75cde91e08d991e9346a9d6ad7dd1"
   },
   "publishConfig": {
     "access": "public"
