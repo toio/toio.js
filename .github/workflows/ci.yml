@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [10.x, 12.x, 13.x]
 
     name: Build with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
