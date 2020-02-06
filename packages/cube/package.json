@@ -25,7 +25,7 @@
     "rimraf": "^2.6.3",
     "ts-jest": "^25.0.0",
     "typed-emitter": "^0.1.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.7.5"
   },
   "dependencies": {
     "noble-mac": "Timeular/noble-mac"

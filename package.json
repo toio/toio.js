@@ -37,7 +37,7 @@
     "live-server": "^1.2.1",
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
-    "typedoc": "^0.14.2",
+    "typedoc": "^0.16.9",
     "typedoc-plugin-lerna-packages": "^0.1.5"
   }
 }
