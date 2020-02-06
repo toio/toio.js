@@ -13,20 +13,9 @@
   optionalDependencies:
     usb "^1.6.0"
 
-"@abandonware/noble@^1.9.2-5":
+"@abandonware/noble@abandonware/noble#17256d9":
   version "1.9.2-5"
-  resolved "https://registry.yarnpkg.com/@abandonware/noble/-/noble-1.9.2-5.tgz#c5fcbe8af7ccd55fe8175d784af4c0a8d0b51703"
-  integrity sha512-Y1eyxDoA9kvKeAgd6mQ9c4qDbqQbqlPR56LkbtlAqptGB4HT/8KQweqqyTsj4CtdhbvCAt1G+J+2nE35WU9fBg==
-  dependencies:
-    debug "^4.1.1"
-    napi-thread-safe-callback "0.0.6"
-    node-addon-api "^1.1.0"
-  optionalDependencies:
-    "@abandonware/bluetooth-hci-socket" "^0.5.3-3"
-
-"@abandonware/noble@abandonware/noble#d0abbae6a5e75cde91e08d991e9346a9d6ad7dd1":
-  version "1.9.2-5"
-  resolved "https://codeload.github.com/abandonware/noble/tar.gz/d0abbae6a5e75cde91e08d991e9346a9d6ad7dd1"
+  resolved "https://codeload.github.com/abandonware/noble/tar.gz/17256d942af488104bc037af2b8ba468d30c44fc"
   dependencies:
     debug "^4.1.1"
     napi-thread-safe-callback "0.0.6"

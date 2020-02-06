@@ -28,7 +28,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "@abandonware/noble": "abandonware/noble#d0abbae6a5e75cde91e08d991e9346a9d6ad7dd1"
+    "@abandonware/noble": "abandonware/noble#17256d9"
   },
   "publishConfig": {
     "access": "public"
