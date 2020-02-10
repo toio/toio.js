@@ -21,6 +21,7 @@ import {
   BatteryCharacteristic,
   ConfigurationCharacteristic,
 } from './characteristics'
+import { MoveToTarget, MoveToOptions } from './characteristics/specs/motor-spec'
 
 function missingCharacteristicRejection(): Promise<never> {
   return Promise.reject('cannot discover the characteristic')
@@ -80,7 +81,7 @@ export class Cube {
           return
         }
 
-        this.peripheral.discoverAllServicesAndCharacteristics((error2, _service, characteristics) => {
+        this.peripheral.discoverAllServicesAndCharacteristics(async (error2, _service, characteristics) => {
           if (error2) {
             reject(error2)
             return
@@ -89,6 +90,10 @@ export class Cube {
           if (characteristics) {
             this.setCharacteristics(characteristics)
           }
+
+          const bleProtocolVersion = await this.getBLEProtocolVersion()
+          this.initCharacteristics(bleProtocolVersion)
+
           resolve(this)
         })
       })
@@ -126,6 +131,22 @@ export class Cube {
   public move(left: number, right: number, duration: number = 0): Promise<void> | void {
     return this.motorCharacteristic !== null
       ? this.motorCharacteristic.move(left, right, duration)
+      : missingCharacteristicRejection()
+  }
+
+  /**
+   * Move cube to the specific coordinate and angle
+   *
+   * @param targets - list of target
+   * @param options - option argument
+   * @returns Promise object
+   */
+  public moveTo(
+    targets: MoveToTarget[],
+    options: MoveToOptions = { moveType: 0, maxSpeed: 115, speedType: 0, timeout: 0, overwrite: true },
+  ): Promise<void> {
+    return this.motorCharacteristic !== null
+      ? this.motorCharacteristic.moveTo(targets, options)
       : missingCharacteristicRejection()
   }
 
@@ -310,5 +331,14 @@ export class Cube {
         // TODO: log
       }
     })
+  }
+
+  private initCharacteristics(bleProtocolVersion: string): void {
+    if (this.motorCharacteristic !== null) {
+      this.motorCharacteristic.init(bleProtocolVersion)
+    }
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.init(bleProtocolVersion)
+    }
   }
 }
