@@ -260,6 +260,18 @@ export class Cube {
       : missingCharacteristicRejection()
   }
 
+  public getDoubleTapStatus(): Promise<{ isDoubleTapped: boolean }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getDoubleTapStatus()
+      : missingCharacteristicRejection()
+  }
+
+  public getOrientation(): Promise<{ orientation: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getOrientation()
+      : missingCharacteristicRejection()
+  }
+
   //
   // Button
   //
