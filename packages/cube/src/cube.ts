@@ -127,7 +127,7 @@ export class Cube {
    * Move cube
    *
    * @param left - [-100, 100] speed of left motor
-   * @param right - [100, 100] speed of right motor
+   * @param right - [-100, 100] speed of right motor
    * @param duration - [0, 2550] duration in millisecond. 0 means endless.
    * @returns Promise object
    */
