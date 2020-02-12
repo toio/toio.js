@@ -116,7 +116,7 @@ export class MotorSpec {
       const target = targets[i]
       const x = target.x ?? 0xffff
       const y = target.y ?? 0xffff
-      const angle = target.angle === undefined ? 0xa000 : (target.rotateType ?? 0x03) << 13 | target.angle
+      const angle = target.angle === undefined ? 0xa000 : ((target.rotateType ?? 0x03) << 13) | target.angle
       buffer.writeUInt16LE(x, 8 + 6 * i)
       buffer.writeUInt16LE(y, 10 + 6 * i)
       buffer.writeUInt16LE(angle, 12 + 6 * i)
