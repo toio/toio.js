@@ -191,7 +191,7 @@ export class Cube {
   /**
    * Play preset sound
    *
-   * @param soundId - [0 - 10] id of preset sound
+   * @param soundId - [0, 10] id of preset sound
    */
   public playPresetSound(soundId: number): void {
     if (this.soundCharacteristic !== null) {
