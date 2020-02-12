@@ -99,7 +99,7 @@ export class MotorCharacteristic {
         const handleResponse = (operationId: number, reason: number): void => {
           if (operationId === data.data.options.operationId) {
             this.eventEmitter.removeListener('motor:response', handleResponse)
-            if (reason === 0) {
+            if (reason === 0 || reason === 5) {
               resolve()
             } else {
               reject(reason)
