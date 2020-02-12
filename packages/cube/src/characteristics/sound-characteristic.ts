@@ -27,10 +27,6 @@ export class SoundCharacteristic {
   }
 
   public playPresetSound(soundId: number): void {
-    if (!soundId) {
-      return
-    }
-
     if (this.timer) {
       clearTimeout(this.timer)
       this.timer = null
@@ -46,10 +42,6 @@ export class SoundCharacteristic {
   }
 
   public playSound(operations: SoundOperation[], repeatCount: number = 0): Promise<void> | void {
-    if (!operations || operations.length === 0) {
-      return Promise.reject('invalid argument: empty operation')
-    }
-
     if (this.timer) {
       clearTimeout(this.timer)
       this.timer = null
