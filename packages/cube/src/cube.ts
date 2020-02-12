@@ -95,6 +95,14 @@ export class Cube {
     })
   }
 
+  public disconnect(): Promise<void> {
+    return new Promise(resolve => {
+      this.peripheral.disconnect(() => {
+        resolve()
+      })
+    })
+  }
+
   public on<E extends keyof Event>(event: E, listener: Event[E]): this {
     const typedEmitter = this.eventEmitter as TypedEmitter<Event>
     typedEmitter.on(event, listener)
