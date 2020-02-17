@@ -114,12 +114,21 @@ export class MotorSpec {
 
     for (let i = 0; i < numTargets; i++) {
       const target = targets[i]
+
+      // When coordinates are not defined, they are not changed.
       const x = target.x ?? 0xffff
       const y = target.y ?? 0xffff
-      const angle = target.angle === undefined ? 0xa000 : ((target.rotateType ?? 0x03) << 13) | target.angle
+
+      // When angle is not defined, rotateType should be 0x05 or 0x06.
+      const angle = clamp(target.angle ?? 0, 0, 0x1fff)
+      let rotateType = target.rotateType ?? 0x00
+      if (target.angle === undefined && target.rotateType !== 0x06) {
+        rotateType = 0x05
+      }
+
       buffer.writeUInt16LE(x, 8 + 6 * i)
       buffer.writeUInt16LE(y, 10 + 6 * i)
-      buffer.writeUInt16LE(angle, 12 + 6 * i)
+      buffer.writeUInt16LE((rotateType << 13) | angle, 12 + 6 * i)
     }
 
     return {
