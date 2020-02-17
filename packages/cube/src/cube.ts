@@ -95,6 +95,14 @@ export class Cube {
     })
   }
 
+  public disconnect(): Promise<void> {
+    return new Promise(resolve => {
+      this.peripheral.disconnect(() => {
+        resolve()
+      })
+    })
+  }
+
   public on<E extends keyof Event>(event: E, listener: Event[E]): this {
     const typedEmitter = this.eventEmitter as TypedEmitter<Event>
     typedEmitter.on(event, listener)
@@ -119,7 +127,7 @@ export class Cube {
    * Move cube
    *
    * @param left - [-100, 100] speed of left motor
-   * @param right - [100, 100] speed of right motor
+   * @param right - [-100, 100] speed of right motor
    * @param duration - [0, 2550] duration in millisecond. 0 means endless.
    * @returns Promise object
    */
@@ -183,7 +191,7 @@ export class Cube {
   /**
    * Play preset sound
    *
-   * @param soundId - [0 - 10] id of preset sound
+   * @param soundId - [0, 10] id of preset sound
    */
   public playPresetSound(soundId: number): void {
     if (this.soundCharacteristic !== null) {

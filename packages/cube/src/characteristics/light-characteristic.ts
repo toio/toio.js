@@ -27,10 +27,6 @@ export class LightCharacteristic {
   }
 
   public turnOnLight(operation: LightOperation): Promise<void> | void {
-    if (!operation) {
-      return Promise.reject('invalid argument: empty operation')
-    }
-
     if (this.timer) {
       clearTimeout(this.timer)
       this.timer = null
