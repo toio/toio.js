@@ -62,7 +62,7 @@ export class MotorCharacteristic {
     }
 
     const data = this.spec.move(left, right, durationMs)
-    this.characteristic.write(Buffer.from(data.buffer), false)
+    this.characteristic.write(Buffer.from(data.buffer), true)
 
     if (data.data.durationMs > 0) {
       return new Promise(resolve => {
@@ -106,7 +106,7 @@ export class MotorCharacteristic {
             }
           }
         }
-        this.characteristic.write(Buffer.from(data.buffer), false)
+        this.characteristic.write(Buffer.from(data.buffer), true)
         this.eventEmitter.on('motor:response', handleResponse)
       })
     }
