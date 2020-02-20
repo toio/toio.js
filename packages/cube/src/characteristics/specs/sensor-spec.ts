@@ -10,7 +10,7 @@
  */
 export interface DataType {
   buffer: Uint8Array
-  data: { isSloped: boolean; isCollisionDetected: boolean }
+  data: { isSloped: boolean; isCollisionDetected: boolean; isDoubleTapped: boolean; orientation: number }
   dataType: 'sensor:detection'
 }
 
@@ -30,12 +30,16 @@ export class SensorSpec {
 
     const isSloped = buffer.readUInt8(1) === 0
     const isCollisionDetected = buffer.readUInt8(2) === 1
+    const isDoubleTapped = buffer.readUInt8(3) === 1
+    const orientation = buffer.readUInt8(4)
 
     return {
       buffer: buffer,
       data: {
         isSloped: isSloped,
         isCollisionDetected: isCollisionDetected,
+        isDoubleTapped: isDoubleTapped,
+        orientation: orientation,
       },
       dataType: 'sensor:detection',
     }

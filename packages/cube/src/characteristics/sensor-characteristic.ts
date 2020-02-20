@@ -16,6 +16,8 @@ import { DataType, SensorSpec } from './specs/sensor-spec'
 export interface Event {
   'sensor:slope': (data: { isSloped: boolean }) => void
   'sensor:collision': (data: { isCollisionDetected: boolean }) => void
+  'sensor:double-tap': (data: { isDoubleTapped: boolean }) => void
+  'sensor:orientation': (data: { orientation: number }) => void
 }
 
 /**
@@ -30,10 +32,12 @@ export class SensorCharacteristic {
 
   private readonly spec: SensorSpec = new SensorSpec()
 
-  private prevStatus: { isSloped?: boolean; isCollisionDetected?: boolean } = {
-    isSloped: undefined,
-    isCollisionDetected: undefined,
-  }
+  private prevStatus: {
+    isSloped?: boolean
+    isCollisionDetected?: boolean
+    isDoubleTapped?: boolean
+    orientation?: number
+  } = {}
 
   public constructor(characteristic: Characteristic, eventEmitter: EventEmitter) {
     this.characteristic = characteristic
@@ -54,6 +58,18 @@ export class SensorCharacteristic {
   public getCollisionStatus(): Promise<{ isCollisionDetected: boolean }> {
     return this.read().then(parsedData => {
       return { isCollisionDetected: parsedData.data.isCollisionDetected }
+    })
+  }
+
+  public getDoubleTapStatus(): Promise<{ isDoubleTapped: boolean }> {
+    return this.read().then(parsedData => {
+      return { isDoubleTapped: parsedData.data.isDoubleTapped }
+    })
+  }
+
+  public getOrientation(): Promise<{ orientation: number }> {
+    return this.read().then(parsedData => {
+      return { orientation: parsedData.data.orientation }
     })
   }
 
@@ -89,6 +105,12 @@ export class SensorCharacteristic {
       }
       if (this.prevStatus.isCollisionDetected !== parsedData.data.isCollisionDetected) {
         this.eventEmitter.emit('sensor:collision', { isCollisionDetected: parsedData.data.isCollisionDetected })
+      }
+      if (this.prevStatus.isDoubleTapped !== parsedData.data.isDoubleTapped) {
+        this.eventEmitter.emit('sensor:double-tap', { isDoubleTapped: parsedData.data.isDoubleTapped })
+      }
+      if (this.prevStatus.orientation !== parsedData.data.orientation) {
+        this.eventEmitter.emit('sensor:orientation', { orientation: parsedData.data.orientation })
       }
       this.prevStatus = parsedData.data
     } catch (e) {
