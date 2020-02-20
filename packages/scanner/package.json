@@ -26,7 +26,7 @@
     "typescript": "^3.4.5"
   },
   "dependencies": {
-    "@abandonware/noble": "abandonware/noble#17256d9",
+    "@abandonware/noble": "^1.9.2-6",
     "@toio/cube": "^1.0.0"
   },
   "publishConfig": {

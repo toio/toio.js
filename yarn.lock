@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@abandonware/bluetooth-hci-socket@^0.5.3-3":
+"@abandonware/bluetooth-hci-socket@^0.5.3-4":
   version "0.5.3-4"
   resolved "https://registry.yarnpkg.com/@abandonware/bluetooth-hci-socket/-/bluetooth-hci-socket-0.5.3-4.tgz#23a8f8141d217c898c17b94870cb0b26ebd547af"
   integrity sha512-hxYIj1qBZVyayJDuN1yhZPzNvuSlCSoFEiWRSZ8nqSvKGQzBddWRTASmlQqVn15G4hHVkjk0xDXjzwUkEgaDyA==
@@ -13,15 +13,16 @@
   optionalDependencies:
     usb "^1.6.0"
 
-"@abandonware/noble@abandonware/noble#17256d9":
-  version "1.9.2-5"
-  resolved "https://codeload.github.com/abandonware/noble/tar.gz/17256d942af488104bc037af2b8ba468d30c44fc"
+"@abandonware/noble@^1.9.2-6":
+  version "1.9.2-6"
+  resolved "https://registry.yarnpkg.com/@abandonware/noble/-/noble-1.9.2-6.tgz#15566f782a57ac2f64f0abfbd597249a2b2a4a41"
+  integrity sha512-hvllDiORL1keMQvx18Ss+r/l1cnCwMREJx+A8LoUzX5tPM0XBGlHq7KDj07hmm0ri0UFtyLXq5vVm4J5xsvUtw==
   dependencies:
     debug "^4.1.1"
     napi-thread-safe-callback "0.0.6"
-    node-addon-api "^1.1.0"
+    node-addon-api "^2.0.0"
   optionalDependencies:
-    "@abandonware/bluetooth-hci-socket" "^0.5.3-3"
+    "@abandonware/bluetooth-hci-socket" "^0.5.3-4"
 
 "@babel/code-frame@^7.0.0":
   version "7.0.0"
@@ -4979,10 +4980,10 @@ node-abi@^2.7.0:
   dependencies:
     semver "^5.4.1"
 
-node-addon-api@^1.1.0:
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.6.3.tgz#3998d4593e2dca2ea82114670a4eb003386a9fe1"
-  integrity sha512-FXWH6mqjWgU8ewuahp4spec8LkroFZK2NicOv6bNwZC3kcwZUI8LeZdG80UzTSLLhK4T7MsgNwlYDVRlDdfTDg==
+node-addon-api@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-2.0.0.tgz#f9afb8d777a91525244b01775ea0ddbe1125483b"
+  integrity sha512-ASCL5U13as7HhOExbT6OlWJJUV/lLzL2voOSP1UVehpRD8FbSrSDjfScK/KwAvVTI5AS6r4VwbOMlIqtvRidnA==
 
 node-fetch-npm@^2.0.2:
   version "2.0.2"

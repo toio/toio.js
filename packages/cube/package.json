@@ -28,7 +28,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "@abandonware/noble": "abandonware/noble#17256d9"
+    "@abandonware/noble": "^1.9.2-6"
   },
   "publishConfig": {
     "access": "public"
