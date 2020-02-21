@@ -26,6 +26,8 @@ export class ConfigurationCharacteristic {
 
   private readonly eventEmitter: TypedEmitter<Event> = new EventEmitter() as TypedEmitter<Event>
 
+  private bleProtocolVersion?: string
+
   public constructor(characteristic: Characteristic) {
     this.characteristic = characteristic
     if (this.characteristic.properties.includes('notify')) {
@@ -33,21 +35,29 @@ export class ConfigurationCharacteristic {
     }
   }
 
+  public init(bleProtocolVersion: string): void {
+    this.bleProtocolVersion = bleProtocolVersion
+  }
+
   public getBLEProtocolVersion(): Promise<string> {
-    // TODO: timeout
-    return new Promise((resolve, reject) => {
-      this.characteristic.subscribe(error => {
-        if (error) {
-          reject(error)
-        } else {
-          this.characteristic.write(Buffer.from([0x01, 0x00]), false)
-          this.eventEmitter.once('configuration:ble-protocol-version', version => {
-            this.characteristic.unsubscribe()
-            resolve(version)
-          })
-        }
+    if (this.bleProtocolVersion !== undefined) {
+      return Promise.resolve(this.bleProtocolVersion)
+    } else {
+      return new Promise<string>((resolve, reject) => {
+        this.characteristic.subscribe(error => {
+          if (error) {
+            reject(error)
+          } else {
+            this.characteristic.write(Buffer.from([0x01, 0x00]), false)
+            this.eventEmitter.once('configuration:ble-protocol-version', version => {
+              this.characteristic.unsubscribe()
+              this.bleProtocolVersion = version
+              resolve(version)
+            })
+          }
+        })
       })
-    })
+    }
   }
 
   private data2result(data: Buffer): void {
