@@ -103,7 +103,7 @@ export class SensorCharacteristic {
       if (this.prevStatus.isSloped !== parsedData.data.isSloped) {
         this.eventEmitter.emit('sensor:slope', { isSloped: parsedData.data.isSloped })
       }
-      if (this.prevStatus.isCollisionDetected !== parsedData.data.isCollisionDetected) {
+      if (parsedData.data.isCollisionDetected) {
         this.eventEmitter.emit('sensor:collision', { isCollisionDetected: parsedData.data.isCollisionDetected })
       }
       if (this.prevStatus.isDoubleTapped !== parsedData.data.isDoubleTapped) {
