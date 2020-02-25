@@ -60,6 +60,10 @@ export class ConfigurationCharacteristic {
     }
   }
 
+  public setCollisionThreshold(threshold: number): void {
+    this.characteristic.write(Buffer.from([0x06, 0x00, threshold]), false)
+  }
+
   private data2result(data: Buffer): void {
     const type = data.readUInt8(0)
     if (type === 0x81) {

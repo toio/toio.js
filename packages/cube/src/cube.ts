@@ -320,6 +320,12 @@ export class Cube {
       : missingCharacteristicRejection()
   }
 
+  public setCollisionThreshold(threshold: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setCollisionThreshold(threshold)
+    }
+  }
+
   private setCharacteristics(characteristics: Characteristic[]): void {
     characteristics.forEach(characteristic => {
       switch (characteristic.uuid) {
