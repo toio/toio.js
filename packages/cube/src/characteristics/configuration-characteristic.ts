@@ -60,7 +60,7 @@ export class ConfigurationCharacteristic {
     }
   }
 
-  public setCollisionThreshold(threshold: number): void{
+  public setCollisionThreshold(threshold: number): void {
     this.characteristic.write(Buffer.from([0x06, 0x00, threshold]), false)
   }
 
