@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { Characteristic } from '@abandonware/noble'
 import { EventEmitter } from 'events'
 import TypedEmitter from 'typed-emitter'
 import { Characteristic } from 'noble-mac'
