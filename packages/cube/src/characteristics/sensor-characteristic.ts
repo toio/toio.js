@@ -16,7 +16,7 @@ import { DataType, SensorSpec } from './specs/sensor-spec'
 export interface Event {
   'sensor:slope': (data: { isSloped: boolean }) => void
   'sensor:collision': (data: { isCollisionDetected: boolean }) => void
-  'sensor:double-tap': (data: { isDoubleTapped: boolean }) => void
+  'sensor:double-tap': () => void
   'sensor:orientation': (data: { orientation: number }) => void
 }
 
@@ -35,7 +35,6 @@ export class SensorCharacteristic {
   private prevStatus: {
     isSloped?: boolean
     isCollisionDetected?: boolean
-    isDoubleTapped?: boolean
     orientation?: number
   } = {}
 
@@ -106,8 +105,8 @@ export class SensorCharacteristic {
       if (parsedData.data.isCollisionDetected) {
         this.eventEmitter.emit('sensor:collision', { isCollisionDetected: parsedData.data.isCollisionDetected })
       }
-      if (this.prevStatus.isDoubleTapped !== parsedData.data.isDoubleTapped) {
-        this.eventEmitter.emit('sensor:double-tap', { isDoubleTapped: parsedData.data.isDoubleTapped })
+      if (parsedData.data.isDoubleTapped) {
+        this.eventEmitter.emit('sensor:double-tap')
       }
       if (this.prevStatus.orientation !== parsedData.data.orientation) {
         this.eventEmitter.emit('sensor:orientation', { orientation: parsedData.data.orientation })
