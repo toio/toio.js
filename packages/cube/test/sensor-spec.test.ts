@@ -11,7 +11,7 @@ describe('sensor spec', () => {
   const spec = new SensorSpec()
 
   test('parse sensor event correctly', () => {
-    const input = Buffer.from([0x01, 0x00, 0x00])
+    const input = Buffer.from([0x01, 0x00, 0x00, 0x00, 0x00])
     const output = spec.parse(input)
 
     expect(output.buffer).toEqual(input)
@@ -19,6 +19,8 @@ describe('sensor spec', () => {
     expect(output.data).toEqual({
       isSloped: true,
       isCollisionDetected: false,
+      isDoubleTapped: false,
+      orientation: 0,
     })
   })
 })

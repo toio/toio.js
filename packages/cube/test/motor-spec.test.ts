@@ -43,10 +43,10 @@ describe('motor spec', () => {
     const inputDuration = 3000
     const data = spec.move(inputLeft, inputRight, inputDuration)
 
-    expect(data.buffer).toEqual(Buffer.from([0x02, 0x01, 0x02, 0x64, 0x02, 0x01, 0x64, 0xff]))
+    expect(data.buffer).toEqual(Buffer.from([0x02, 0x01, 0x02, 0x73, 0x02, 0x01, 0x73, 0xff]))
     expect(data.data).toEqual({
-      left: -100,
-      right: 100,
+      left: -115,
+      right: 115,
       durationMs: 2550,
     })
   })
