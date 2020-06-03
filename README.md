@@ -2,6 +2,32 @@
 
 Library for controlling toio&trade;Core Cube using Node.js
 
+## :computer: Getting Started
+
+### Prerequisites
+
+- **Node.js** >= 8
+- This library depends on [noble](https://github.com/noble/noble), so follow [noble's prerequisites](https://github.com/noble/noble#prerequisites) please.
+  - Windows : needs Bluetooth 4.0 USB adapter. This video is good for beginners - [Bluetooth LE with Node.js and Noble on Windows](https://www.youtube.com/watch?v=mL9B8wuEdms&feature=youtu.be&t=1m46s)
+
+### Installation
+
+Install toio.js using `yarn`:
+
+```bash
+yarn add @toio/scanner
+```
+
+Or `npm`:
+
+```bash
+npm install @toio/scanner
+```
+
+### Usage
+
+Here is a quick example to get you started.
+
 ```js
 const { NearestScanner } = require('@toio/scanner')
 
@@ -12,24 +38,20 @@ async function main() {
   // connect to the cube
   await cube.connect()
 
-  // move cube
+  // move the cube
   cube.move(100, 100, 1000)
   //         |    |     `--- duration [ms]
   //         |    `--------- right motor speed
-  //          `------------- left motor speed
+  //         `-------------- left motor speed
 }
 
 main()
 ```
 
+## :memo: Documentation
+
 - [API reference document](https://toio.github.io/toio.js/)
 - [toio&trade;Core Cube technical specification](https://toio.github.io/toio-spec/)
-
-## :computer: Prerequisites
-
-- **Node.js** >= 8
-- This library depends on [noble](https://github.com/noble/noble), so follow [noble's prerequisites](https://github.com/noble/noble#prerequisites) please.
-  - Windows : needs Bluetooth 4.0 USB adapter. This video is good for beginners - [Bluetooth LE with Node.js and Noble on Windows](https://www.youtube.com/watch?v=mL9B8wuEdms&feature=youtu.be&t=1m46s)
 
 ## :white_check_mark: Verified Environment
 
