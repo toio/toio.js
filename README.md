@@ -6,7 +6,7 @@ Library for controlling toio&trade;Core Cube using Node.js
 
 ### Prerequisites
 
-- **Node.js** >= 8
+- **Node.js** >= 10
 - This library depends on [noble](https://github.com/noble/noble), so follow [noble's prerequisites](https://github.com/noble/noble#prerequisites) please.
   - Windows : needs Bluetooth 4.0 USB adapter. This video is good for beginners - [Bluetooth LE with Node.js and Noble on Windows](https://www.youtube.com/watch?v=mL9B8wuEdms&feature=youtu.be&t=1m46s)
 
@@ -59,9 +59,9 @@ main()
 
 On Windows, we need additional settings (C++, python and special driver for BLE adapter). Please see noble's setup guide mentioned above.
 
-#### macOS (10.12, 10.13 and 10.14)
+#### macOS (10.12, 10.13, 10.14 and 10.15)
 
-We recommend 10.13 (High Sierra) and 10.14 (Mojave). On 10.12 (Sierra), the frequency of BLE notify event is slower than 10.13, 10.14 or Windows. This affects position correction logic (like used in chase sample).
+We recommend 10.13 (High Sierra), 10.14 (Mojave) and 10.15(Catalina). On 10.12 (Sierra), the frequency of BLE notify event is slower than others. This affects position correction logic (like used in chase sample).
 
 #### Linux (not verified yet)
 
