@@ -27,7 +27,7 @@ export class NearScanner extends Scanner {
    * @param numberOfCoreCubes - number of scanning core cubes
    * @param timeoutMs - timeout duration in millisecond. 0 means no timeout.
    */
-  public constructor(numberOfCoreCubes: number = 1, timeoutMs: number = Scanner.DEFAULT_TIMEOUT_MS) {
+  public constructor(numberOfCoreCubes = 1, timeoutMs: number = Scanner.DEFAULT_TIMEOUT_MS) {
     super(timeoutMs)
     this.numberOfCoreCubes = numberOfCoreCubes
   }

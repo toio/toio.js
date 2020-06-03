@@ -53,7 +53,7 @@ export class LightCharacteristic {
     }
   }
 
-  public turnOnLightWithScenario(operations: LightOperation[], repeatCount: number = 0): Promise<void> | void {
+  public turnOnLightWithScenario(operations: LightOperation[], repeatCount = 0): Promise<void> | void {
     if (!operations || operations.length === 0) {
       return Promise.reject('invalid argument: empty operation')
     }

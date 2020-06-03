@@ -136,7 +136,7 @@ export class Cube {
    * @param duration - [0, 2550] duration in millisecond. 0 means endless.
    * @returns Promise object
    */
-  public move(left: number, right: number, duration: number = 0): Promise<void> | void {
+  public move(left: number, right: number, duration = 0): Promise<void> | void {
     return this.motorCharacteristic !== null
       ? this.motorCharacteristic.move(left, right, duration)
       : missingCharacteristicRejection()
@@ -190,7 +190,7 @@ export class Cube {
    * @param repeatCount - the number of repeat, 0 means eternal loop.
    * @returns Promise object
    */
-  public turnOnLightWithScenario(operations: LightOperation[], repeatCount: number = 0): Promise<void> | void {
+  public turnOnLightWithScenario(operations: LightOperation[], repeatCount = 0): Promise<void> | void {
     return this.lightCharacteristic !== null
       ? this.lightCharacteristic.turnOnLightWithScenario(operations, repeatCount)
       : missingCharacteristicRejection()
@@ -227,7 +227,7 @@ export class Cube {
    * @param repeatCount - the number of repeat, 0 means eternal loop.
    * @returns Promise object
    */
-  public playSound(operations: SoundOperation[], repeatCount: number = 0): Promise<void> | void {
+  public playSound(operations: SoundOperation[], repeatCount = 0): Promise<void> | void {
     return this.soundCharacteristic !== null
       ? this.soundCharacteristic.playSound(operations, repeatCount)
       : missingCharacteristicRejection()
