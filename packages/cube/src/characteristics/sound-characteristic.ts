@@ -41,7 +41,7 @@ export class SoundCharacteristic {
     this.characteristic.write(Buffer.from(data.buffer), false)
   }
 
-  public playSound(operations: SoundOperation[], repeatCount: number = 0): Promise<void> | void {
+  public playSound(operations: SoundOperation[], repeatCount = 0): Promise<void> | void {
     if (this.timer) {
       clearTimeout(this.timer)
       this.timer = null

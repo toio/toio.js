@@ -1,0 +1,65 @@
+name: toio.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        node-version: [10.x, 12.x, 13.x]
+
+    name: Build with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn run build
+
+  test:
+    name: Test with Node.js 12.x on ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Test
+        run: yarn test
+        env:
+          CI: true
+
+  lint:
+    name: Lint with Node.js 12.x on ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Lint
+        run: yarn lint
+        env:
+          CI: true
