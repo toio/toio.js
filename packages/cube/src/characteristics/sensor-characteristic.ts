@@ -18,6 +18,7 @@ export interface Event {
   'sensor:collision': (data: { isCollisionDetected: boolean }) => void
   'sensor:double-tap': () => void
   'sensor:orientation': (data: { orientation: number }) => void
+  'sensor:shake': (data: { level: number }) => void
 }
 
 /**
@@ -36,6 +37,7 @@ export class SensorCharacteristic {
     isSloped?: boolean
     isCollisionDetected?: boolean
     orientation?: number
+    shakeLevel?: number
   } = {}
 
   public constructor(characteristic: Characteristic, eventEmitter: EventEmitter) {
@@ -110,6 +112,9 @@ export class SensorCharacteristic {
       }
       if (this.prevStatus.orientation !== parsedData.data.orientation) {
         this.eventEmitter.emit('sensor:orientation', { orientation: parsedData.data.orientation })
+      }
+      if (this.prevStatus.shakeLevel !== parsedData.data.shakeLevel) {
+        this.eventEmitter.emit('sensor:shake', { level: parsedData.data.shakeLevel })
       }
       this.prevStatus = parsedData.data
     } catch (e) {
