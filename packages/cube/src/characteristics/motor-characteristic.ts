@@ -166,7 +166,6 @@ export class MotorCharacteristic {
 
     const data = this.spec.accelerationMove(translationSpeed, rotationSpeed, acceleration, priorityType, durationMs)
     this.characteristic.write(Buffer.from(data.buffer), true)
-    console.log(data.buffer)
 
     if (data.data.durationMs > 0) {
       return new Promise(resolve => {
