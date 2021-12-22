@@ -366,6 +366,12 @@ export class Cube {
     }
   }
 
+  public setMotorSpeedFeedback(enable: boolean): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setMotorSpeedFeedback(enable)
+    }
+  }
+
   private setCharacteristics(characteristics: Characteristic[]): void {
     characteristics.forEach(characteristic => {
       switch (characteristic.uuid) {
@@ -373,7 +379,7 @@ export class Cube {
           new IdCharacteristic(characteristic, this.eventEmitter)
           break
         case MotorCharacteristic.UUID:
-          this.motorCharacteristic = new MotorCharacteristic(characteristic)
+          this.motorCharacteristic = new MotorCharacteristic(characteristic, this.eventEmitter)
           break
         case LightCharacteristic.UUID:
           this.lightCharacteristic = new LightCharacteristic(characteristic)

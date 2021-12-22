@@ -11,13 +11,23 @@ import { createTagHandler } from '../../util/tag'
 /**
  * @hidden
  */
-export interface MotorResponse {
-  buffer: Buffer
-  data: {
-    operationId: number
-    reason: number
-  }
-}
+export type MotorResponse =
+  | {
+      buffer: Buffer
+      data: {
+        operationId: number
+        reason: number
+      }
+      dataType: 'motor:moveTo-response'
+    }
+  | {
+      buffer: Buffer
+      data: {
+        left: number
+        right: number
+      }
+      dataType: 'motor:speed-feedback'
+    }
 
 /**
  * @hidden
@@ -85,6 +95,16 @@ export class MotorSpec {
             operationId: buffer.readUInt8(1),
             reason: buffer.readUInt8(2),
           },
+          dataType: 'motor:moveTo-response',
+        }
+      case 0xe0:
+        return {
+          buffer: buffer,
+          data: {
+            left: buffer.readUInt8(1),
+            right: buffer.readUInt8(2),
+          },
+          dataType: 'motor:speed-feedback',
         }
     }
 
