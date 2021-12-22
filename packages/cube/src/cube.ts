@@ -366,6 +366,18 @@ export class Cube {
     }
   }
 
+  public setIdNotification(intervalMs: number, notificationType: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setIdNotification(intervalMs, notificationType)
+    }
+  }
+
+  public setIdMissedNotification(sensitivityMs: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setIdMissedNotification(sensitivityMs)
+    }
+  }
+
   public setDoubleTapIntervalThreshold(threshold: number): void {
     if (this.configurationCharacteristic !== null) {
       this.configurationCharacteristic.setDoubleTapIntervalThreshold(threshold)

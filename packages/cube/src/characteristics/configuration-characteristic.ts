@@ -76,6 +76,17 @@ export class ConfigurationCharacteristic {
     this.characteristic.write(Buffer.from([0x17, 0x00, th]), false)
   }
 
+  public setIdNotification(intervalMs: number, notificationType: number): void {
+    const interval = clamp(intervalMs / 10, 0, 0xff)
+    const type = clamp(notificationType, 0, 0xff)
+    this.characteristic.write(Buffer.from([0x18, 0x00, interval, type]), false)
+  }
+
+  public setIdMissedNotification(sensitivityMs: number): void {
+    const sensitivity = clamp(sensitivityMs / 10, 0, 0xff)
+    this.characteristic.write(Buffer.from([0x19, 0x00, sensitivity]), false)
+  }
+
   public setMotorSpeedFeedback(enable: boolean): void {
     const en = enable ? 1 : 0
     this.characteristic.write(Buffer.from([0x1c, 0x00, en]), false)
