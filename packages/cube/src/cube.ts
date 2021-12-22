@@ -360,6 +360,12 @@ export class Cube {
     }
   }
 
+  public setDoubleTapIntervalThreshold(threshold: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setDoubleTapIntervalThreshold(threshold)
+    }
+  }
+
   private setCharacteristics(characteristics: Characteristic[]): void {
     characteristics.forEach(characteristic => {
       switch (characteristic.uuid) {

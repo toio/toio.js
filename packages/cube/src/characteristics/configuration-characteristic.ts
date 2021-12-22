@@ -70,6 +70,11 @@ export class ConfigurationCharacteristic {
     this.characteristic.write(Buffer.from([0x06, 0x00, threshold]), false)
   }
 
+  public setDoubleTapIntervalThreshold(threshold: number): void {
+    const th = clamp(threshold, 0, 7)
+    this.characteristic.write(Buffer.from([0x17, 0x00, th]), false)
+  }
+
   private data2result(data: Buffer): void {
     const type = data.readUInt8(0)
     if (type === 0x81) {
