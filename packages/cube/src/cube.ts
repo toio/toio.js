@@ -348,6 +348,12 @@ export class Cube {
       : missingCharacteristicRejection()
   }
 
+  public setFlatThreshold(degree: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setFlatThreshold(degree)
+    }
+  }
+
   public setCollisionThreshold(threshold: number): void {
     if (this.configurationCharacteristic !== null) {
       this.configurationCharacteristic.setCollisionThreshold(threshold)

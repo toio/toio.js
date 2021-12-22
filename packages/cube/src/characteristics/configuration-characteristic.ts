@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { clamp } from '../util/clamp'
 import { EventEmitter } from 'events'
 import TypedEmitter from 'typed-emitter'
 import { Characteristic } from 'noble-mac'
@@ -58,6 +59,11 @@ export class ConfigurationCharacteristic {
         })
       })
     }
+  }
+
+  public setFlatThreshold(degree: number): void {
+    const deg = clamp(degree, 1, 45)
+    this.characteristic.write(Buffer.from([0x05, 0x00, deg]), false)
   }
 
   public setCollisionThreshold(threshold: number): void {
