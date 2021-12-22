@@ -308,9 +308,15 @@ export class Cube {
       : missingCharacteristicRejection()
   }
 
-  public getMagnetId(): Promise<{ magnetId: number }> {
+  public getMagnetId(): Promise<{ id: number }> {
     return this.sensorCharacteristic !== null
       ? this.sensorCharacteristic.getMagnetId()
+      : missingCharacteristicRejection()
+  }
+
+  public getMagnetForce(): Promise<{ force: number; directionX: number; directionY: number; directionZ: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getMagnetForce()
       : missingCharacteristicRejection()
   }
 
@@ -402,9 +408,10 @@ export class Cube {
     }
   }
 
-  public setMagnetDetection(enable: boolean): void {
+  public setMagnetDetection(detectType: number, intervalMs: number, notificationType = 0): void {
     if (this.configurationCharacteristic !== null) {
-      this.configurationCharacteristic.setMagnetDetection(enable)
+      this.sensorCharacteristic?.setMagnetMode(detectType)
+      this.configurationCharacteristic.setMagnetDetection(detectType, intervalMs, notificationType)
     }
   }
 

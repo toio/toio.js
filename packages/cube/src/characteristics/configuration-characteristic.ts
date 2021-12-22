@@ -92,9 +92,12 @@ export class ConfigurationCharacteristic {
     this.characteristic.write(Buffer.from([0x1c, 0x00, en]), false)
   }
 
-  public setMagnetDetection(enable: boolean): void {
-    const en = enable ? 1 : 0
-    this.characteristic.write(Buffer.from([0x1b, 0x00, en]), false)
+  public setMagnetDetection(detectType: number, intervalMs: number, notificationType: number): void {
+    const detect = clamp(detectType, 0, 2)
+    const interval = clamp(intervalMs / 20, 1, 0xff)
+    const notification = clamp(notificationType, 0, 1)
+
+    this.characteristic.write(Buffer.from([0x1b, 0x00, detect, interval, notification]), false)
   }
 
   public setAttitudeControl(format: number, intervalMs: number, notificationType: number): void {

@@ -23,7 +23,11 @@ export type DataType =
   | {
       buffer: Uint8Array
       data: {
-        magnetId: number
+        id: number
+        force: number
+        directionX: number
+        directionY: number
+        directionZ: number
       }
       dataType: 'sensor:magnet'
     }
@@ -77,10 +81,26 @@ export class SensorSpec {
         }
       case 0x02:
         const id = buffer.readUInt8(1)
+        let force, directionX, directionY, directionZ
+        if (buffer.length > 2) {
+          force = buffer.readUInt8(2)
+          directionX = buffer.readInt8(3) / 10
+          directionY = buffer.readInt8(4) / 10
+          directionZ = buffer.readInt8(5) / 10
+        } else {
+          force = 0
+          directionX = 0
+          directionY = 0
+          directionZ = 0
+        }
         return {
           buffer: buffer,
           data: {
-            magnetId: id,
+            id: id,
+            force: force,
+            directionX: directionX,
+            directionY: directionY,
+            directionZ: directionZ,
           },
           dataType: 'sensor:magnet',
         }

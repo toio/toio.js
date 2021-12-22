@@ -20,6 +20,7 @@ export interface Event {
   'sensor:orientation': (data: { orientation: number }) => void
   'sensor:shake': (data: { level: number }) => void
   'sensor:magnet-id': (data: { id: number }) => void
+  'sensor:magnet-force': (data: { force: number; directionX: number; directionY: number; directionZ: number }) => void
   'sensor:attitude-euler': (data: { roll: number; pitch: number; yaw: number }) => void
   'sensor:attitude-quaternion': (data: { w: number; x: number; y: number; z: number }) => void
 }
@@ -36,6 +37,8 @@ export class SensorCharacteristic {
 
   private readonly spec: SensorSpec = new SensorSpec()
 
+  private magnetMode = 0
+
   private prevMotionStatus: {
     isSloped?: boolean
     isCollisionDetected?: boolean
@@ -45,7 +48,11 @@ export class SensorCharacteristic {
   } = {}
 
   private prevMagnetStatus: {
-    magnetId?: number
+    id?: number
+    force?: number
+    directionX?: number
+    directionY?: number
+    directionZ?: number
   } = {}
 
   private prevAttitudeEuler: {
@@ -103,11 +110,25 @@ export class SensorCharacteristic {
     })
   }
 
-  public getMagnetId(): Promise<{ magnetId: number }> {
+  public getMagnetId(): Promise<{ id: number }> {
     return new Promise(resolve => {
-      this.prevMagnetStatus.magnetId !== undefined
-        ? resolve({ magnetId: this.prevMagnetStatus.magnetId })
-        : resolve({ magnetId: 0 })
+      this.prevMagnetStatus.id !== undefined ? resolve({ id: this.prevMagnetStatus.id }) : resolve({ id: 0 })
+    })
+  }
+
+  public getMagnetForce(): Promise<{ force: number; directionX: number; directionY: number; directionZ: number }> {
+    return new Promise(resolve => {
+      this.prevMagnetStatus.force !== undefined &&
+      this.prevMagnetStatus.directionX !== undefined &&
+      this.prevMagnetStatus.directionY !== undefined &&
+      this.prevMagnetStatus.directionZ !== undefined
+        ? resolve({
+            force: this.prevMagnetStatus.force,
+            directionX: this.prevMagnetStatus.directionX,
+            directionY: this.prevMagnetStatus.directionY,
+            directionZ: this.prevMagnetStatus.directionZ,
+          })
+        : resolve({ force: 0, directionX: 0, directionY: 0, directionZ: 0 })
     })
   }
 
@@ -158,6 +179,10 @@ export class SensorCharacteristic {
     this.characteristic.write(Buffer.from([0x82]), false)
   }
 
+  public setMagnetMode(mode: number): void {
+    this.magnetMode = mode
+  }
+
   private onData(data: Buffer): void {
     try {
       const parsedData = this.spec.parse(data)
@@ -180,8 +205,16 @@ export class SensorCharacteristic {
         this.prevMotionStatus = parsedData.data
       }
       if (parsedData.dataType === 'sensor:magnet') {
-        if (this.prevMagnetStatus.magnetId !== parsedData.data.magnetId) {
-          this.eventEmitter.emit('sensor:magnet-id', { id: parsedData.data.magnetId })
+        if (this.magnetMode === 1) {
+          this.eventEmitter.emit('sensor:magnet-id', { id: parsedData.data.id })
+        }
+        if (this.magnetMode === 2) {
+          this.eventEmitter.emit('sensor:magnet-force', {
+            force: parsedData.data.force,
+            directionX: parsedData.data.directionX,
+            directionY: parsedData.data.directionY,
+            directionZ: parsedData.data.directionZ,
+          })
         }
         this.prevMagnetStatus = parsedData.data
       }
