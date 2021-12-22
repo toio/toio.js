@@ -314,6 +314,18 @@ export class Cube {
       : missingCharacteristicRejection()
   }
 
+  public getAttitudeEuler(): Promise<{ roll: number; pitch: number; yaw: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getAttitudeEuler()
+      : missingCharacteristicRejection()
+  }
+
+  public getAttitudeQuaternion(): Promise<{ w: number; x: number; y: number; z: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getAttitudeQuaternion()
+      : missingCharacteristicRejection()
+  }
+
   //
   // Button
   //
@@ -393,6 +405,12 @@ export class Cube {
   public setMagnetDetection(enable: boolean): void {
     if (this.configurationCharacteristic !== null) {
       this.configurationCharacteristic.setMagnetDetection(enable)
+    }
+  }
+
+  public setAttitudeControl(format: number, intervalMs: number, notificationType: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setAttitudeControl(format, intervalMs, notificationType)
     }
   }
 

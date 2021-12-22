@@ -20,6 +20,8 @@ export interface Event {
   'sensor:orientation': (data: { orientation: number }) => void
   'sensor:shake': (data: { level: number }) => void
   'sensor:magnet-id': (data: { id: number }) => void
+  'sensor:attitude-euler': (data: { roll: number; pitch: number; yaw: number }) => void
+  'sensor:attitude-quaternion': (data: { w: number; x: number; y: number; z: number }) => void
 }
 
 /**
@@ -44,6 +46,19 @@ export class SensorCharacteristic {
 
   private prevMagnetStatus: {
     magnetId?: number
+  } = {}
+
+  private prevAttitudeEuler: {
+    roll?: number
+    pitch?: number
+    yaw?: number
+  } = {}
+
+  private prevAttitudeQuaternion: {
+    w?: number
+    x?: number
+    y?: number
+    z?: number
   } = {}
 
   public constructor(characteristic: Characteristic, eventEmitter: EventEmitter) {
@@ -96,6 +111,45 @@ export class SensorCharacteristic {
     })
   }
 
+  public getAttitudeEuler(): Promise<{ roll: number; pitch: number; yaw: number }> {
+    return new Promise(resolve => {
+      this.prevAttitudeEuler.roll !== undefined &&
+      this.prevAttitudeEuler.pitch !== undefined &&
+      this.prevAttitudeEuler.yaw !== undefined
+        ? resolve({
+            roll: this.prevAttitudeEuler.roll,
+            pitch: this.prevAttitudeEuler.pitch,
+            yaw: this.prevAttitudeEuler.yaw,
+          })
+        : resolve({
+            roll: 0,
+            pitch: 0,
+            yaw: 0,
+          })
+    })
+  }
+
+  public getAttitudeQuaternion(): Promise<{ w: number; x: number; y: number; z: number }> {
+    return new Promise(resolve => {
+      this.prevAttitudeQuaternion.w !== undefined &&
+      this.prevAttitudeQuaternion.x !== undefined &&
+      this.prevAttitudeQuaternion.y !== undefined &&
+      this.prevAttitudeQuaternion.z !== undefined
+        ? resolve({
+            w: this.prevAttitudeQuaternion.w,
+            x: this.prevAttitudeQuaternion.x,
+            y: this.prevAttitudeQuaternion.y,
+            z: this.prevAttitudeQuaternion.z,
+          })
+        : resolve({
+            w: 1,
+            x: 0,
+            y: 0,
+            z: 0,
+          })
+    })
+  }
+
   public notifyMotionStatus(): void {
     this.characteristic.write(Buffer.from([0x81]), false)
   }
@@ -130,6 +184,23 @@ export class SensorCharacteristic {
           this.eventEmitter.emit('sensor:magnet-id', { id: parsedData.data.magnetId })
         }
         this.prevMagnetStatus = parsedData.data
+      }
+      if (parsedData.dataType === 'sensor:attitude-euler') {
+        this.eventEmitter.emit('sensor:attitude-euler', {
+          roll: parsedData.data.roll,
+          pitch: parsedData.data.pitch,
+          yaw: parsedData.data.yaw,
+        })
+        this.prevAttitudeEuler = parsedData.data
+      }
+      if (parsedData.dataType === 'sensor:attitude-quaternion') {
+        this.eventEmitter.emit('sensor:attitude-quaternion', {
+          w: parsedData.data.w,
+          x: parsedData.data.x,
+          y: parsedData.data.y,
+          z: parsedData.data.z,
+        })
+        this.prevAttitudeQuaternion = parsedData.data
       }
     } catch (e) {
       return

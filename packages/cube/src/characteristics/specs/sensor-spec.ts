@@ -27,6 +27,25 @@ export type DataType =
       }
       dataType: 'sensor:magnet'
     }
+  | {
+      buffer: Uint8Array
+      data: {
+        roll: number
+        pitch: number
+        yaw: number
+      }
+      dataType: 'sensor:attitude-euler'
+    }
+  | {
+      buffer: Uint8Array
+      data: {
+        w: number
+        x: number
+        y: number
+        z: number
+      }
+      dataType: 'sensor:attitude-quaternion'
+    }
 
 /**
  * @hidden
@@ -64,6 +83,28 @@ export class SensorSpec {
             magnetId: id,
           },
           dataType: 'sensor:magnet',
+        }
+      case 0x03:
+        const format = buffer.readUInt8(1)
+        if (format === 1) {
+          const roll = buffer.readInt16LE(2)
+          const pitch = buffer.readInt16LE(4)
+          const yaw = buffer.readInt16LE(6)
+          return {
+            buffer: buffer,
+            data: { roll: roll, pitch: pitch, yaw: yaw },
+            dataType: 'sensor:attitude-euler',
+          }
+        } else if (format === 2) {
+          const w = buffer.readInt16LE(2) / 10000
+          const x = buffer.readInt16LE(4) / 10000
+          const y = buffer.readInt16LE(6) / 10000
+          const z = buffer.readInt16LE(8) / 10000
+          return {
+            buffer: buffer,
+            data: { w: w, x: x, y: y, z: z },
+            dataType: 'sensor:attitude-quaternion',
+          }
         }
     }
     throw new Error('parse error')

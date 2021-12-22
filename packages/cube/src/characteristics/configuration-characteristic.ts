@@ -97,6 +97,14 @@ export class ConfigurationCharacteristic {
     this.characteristic.write(Buffer.from([0x1b, 0x00, en]), false)
   }
 
+  public setAttitudeControl(format: number, intervalMs: number, notificationType: number): void {
+    const fmt = clamp(format, 1, 2)
+    const interval = clamp(intervalMs / 10, 0, 0xff)
+    const type = clamp(notificationType, 0, 1)
+
+    this.characteristic.write(Buffer.from([0x1d, 0x00, fmt, interval, type]), false)
+  }
+
   private data2result(data: Buffer): void {
     const type = data.readUInt8(0)
     if (type === 0x81) {
