@@ -21,7 +21,7 @@ import {
   BatteryCharacteristic,
   ConfigurationCharacteristic,
 } from './characteristics'
-import { MoveToTarget, MoveToOptions } from './characteristics/specs/motor-spec'
+import { MoveToTarget, MoveToOptions, MotorSpec } from './characteristics/specs/motor-spec'
 
 function missingCharacteristicRejection(): Promise<never> {
   return Promise.reject('cannot discover the characteristic')
@@ -131,8 +131,8 @@ export class Cube {
   /**
    * Move cube
    *
-   * @param left - [-100, 100] speed of left motor
-   * @param right - [-100, 100] speed of right motor
+   * @param left - [-115, 115] speed of left motor
+   * @param right - [-115, 115] speed of right motor
    * @param duration - [0, 2550] duration in millisecond. 0 means endless.
    * @returns Promise object
    */
@@ -155,6 +155,34 @@ export class Cube {
   ): Promise<void> {
     return this.motorCharacteristic !== null
       ? this.motorCharacteristic.moveTo(targets, options)
+      : missingCharacteristicRejection()
+  }
+
+  /**
+   * Move cube to the specific coordinate and angle
+   *
+   * @param translationSpeed - [-115, 115] translational speed
+   * @param rotationSpeed - [-32767, 32767] rotational speed / unit : degree per second
+   * @param acceleration - [0, 255] moving acceleration. 0 means speed up immediately.
+   * @param priorityType - [0, 1] translation and rotation speed priorities
+   * @param durationMs - [0, 2550] duration in millisecond. 0 means endless.
+   * @returns Promise object
+   */
+  public accelerationMove(
+    translationSpeed: number,
+    rotationSpeed: number,
+    acceleration = 0,
+    priorityType = MotorSpec.ACC_PRIORITY_STRAIGHT,
+    durationMs = 0,
+  ): Promise<void> | void {
+    return this.motorCharacteristic !== null
+      ? this.motorCharacteristic.accelerationMove(
+          translationSpeed,
+          rotationSpeed,
+          acceleration,
+          priorityType,
+          durationMs,
+        )
       : missingCharacteristicRejection()
   }
 

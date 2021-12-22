@@ -142,6 +142,43 @@ export class MotorCharacteristic {
     })
   }
 
+  public accelerationMove(
+    translationSpeed: number,
+    rotationSpeed: number,
+    acceleration: number,
+    priorityType: number,
+    durationMs: number,
+  ): Promise<void> | void {
+    if (this.bleProtocolVersion !== undefined && semver.lt(this.bleProtocolVersion, '2.1.0')) {
+      return Promise.resolve()
+    }
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = null
+    }
+
+    if (this.pendingResolve) {
+      this.pendingResolve()
+      this.pendingResolve = null
+    }
+
+    const data = this.spec.accelerationMove(translationSpeed, rotationSpeed, acceleration, priorityType, durationMs)
+    this.characteristic.write(Buffer.from(data.buffer), true)
+    console.log(data.buffer)
+
+    if (data.data.durationMs > 0) {
+      return new Promise(resolve => {
+        this.pendingResolve = resolve
+        this.timer = setTimeout(() => {
+          if (this.pendingResolve) {
+            this.pendingResolve()
+            this.pendingResolve = null
+          }
+        }, data.data.durationMs)
+      })
+    }
+  }
+
   public stop(): void {
     this.move(0, 0, 0)
   }
