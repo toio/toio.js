@@ -67,7 +67,8 @@ export class ConfigurationCharacteristic {
   }
 
   public setCollisionThreshold(threshold: number): void {
-    this.characteristic.write(Buffer.from([0x06, 0x00, threshold]), false)
+    const th = clamp(threshold, 1, 10)
+    this.characteristic.write(Buffer.from([0x06, 0x00, th]), false)
   }
 
   public setDoubleTapIntervalThreshold(threshold: number): void {
