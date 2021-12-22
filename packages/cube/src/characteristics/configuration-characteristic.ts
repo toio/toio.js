@@ -81,6 +81,11 @@ export class ConfigurationCharacteristic {
     this.characteristic.write(Buffer.from([0x1c, 0x00, en]), false)
   }
 
+  public setMagnetDetection(enable: boolean): void {
+    const en = enable ? 1 : 0
+    this.characteristic.write(Buffer.from([0x1b, 0x00, en]), false)
+  }
+
   private data2result(data: Buffer): void {
     const type = data.readUInt8(0)
     if (type === 0x81) {

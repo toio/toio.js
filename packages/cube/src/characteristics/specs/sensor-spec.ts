@@ -8,48 +8,64 @@
 /**
  * @hidden
  */
-export interface DataType {
-  buffer: Uint8Array
-  data: {
-    isSloped: boolean
-    isCollisionDetected: boolean
-    isDoubleTapped: boolean
-    orientation: number
-    shakeLevel: number
-  }
-  dataType: 'sensor:detection'
-}
+export type DataType =
+  | {
+      buffer: Uint8Array
+      data: {
+        isSloped: boolean
+        isCollisionDetected: boolean
+        isDoubleTapped: boolean
+        orientation: number
+        shakeLevel: number
+      }
+      dataType: 'sensor:motion'
+    }
+  | {
+      buffer: Uint8Array
+      data: {
+        magnetId: number
+      }
+      dataType: 'sensor:magnet'
+    }
 
 /**
  * @hidden
  */
 export class SensorSpec {
   public parse(buffer: Buffer): DataType {
-    if (buffer.byteLength < 3) {
-      throw new Error('parse error')
-    }
-
     const type = buffer.readUInt8(0)
-    if (type !== 1) {
-      throw new Error('parse error')
-    }
+    switch (type) {
+      case 0x01:
+        if (buffer.byteLength < 3) {
+          throw new Error('parse error')
+        }
+        const isSloped = buffer.readUInt8(1) === 0
+        const isCollisionDetected = buffer.readUInt8(2) === 1
+        const isDoubleTapped = buffer.readUInt8(3) === 1
+        const orientation = buffer.readUInt8(4)
+        const shakeLevel = buffer.byteLength > 5 ? buffer.readUInt8(5) : 0
 
-    const isSloped = buffer.readUInt8(1) === 0
-    const isCollisionDetected = buffer.readUInt8(2) === 1
-    const isDoubleTapped = buffer.readUInt8(3) === 1
-    const orientation = buffer.readUInt8(4)
-    const shakeLevel = buffer.byteLength > 5 ? buffer.readUInt8(5) : 0
-
-    return {
-      buffer: buffer,
-      data: {
-        isSloped: isSloped,
-        isCollisionDetected: isCollisionDetected,
-        isDoubleTapped: isDoubleTapped,
-        orientation: orientation,
-        shakeLevel: shakeLevel,
-      },
-      dataType: 'sensor:detection',
+        return {
+          buffer: buffer,
+          data: {
+            isSloped: isSloped,
+            isCollisionDetected: isCollisionDetected,
+            isDoubleTapped: isDoubleTapped,
+            orientation: orientation,
+            shakeLevel: shakeLevel,
+          },
+          dataType: 'sensor:motion',
+        }
+      case 0x02:
+        const id = buffer.readUInt8(1)
+        return {
+          buffer: buffer,
+          data: {
+            magnetId: id,
+          },
+          dataType: 'sensor:magnet',
+        }
     }
+    throw new Error('parse error')
   }
 }

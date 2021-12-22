@@ -308,6 +308,12 @@ export class Cube {
       : missingCharacteristicRejection()
   }
 
+  public getMagnetId(): Promise<{ magnetId: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getMagnetId()
+      : missingCharacteristicRejection()
+  }
+
   //
   // Button
   //
@@ -372,6 +378,12 @@ export class Cube {
     }
   }
 
+  public setMagnetDetection(enable: boolean): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setMagnetDetection(enable)
+    }
+  }
+
   private setCharacteristics(characteristics: Characteristic[]): void {
     characteristics.forEach(characteristic => {
       switch (characteristic.uuid) {
@@ -411,6 +423,10 @@ export class Cube {
     }
     if (this.configurationCharacteristic !== null) {
       this.configurationCharacteristic.init(bleProtocolVersion)
+    }
+    if (this.sensorCharacteristic !== null) {
+      this.sensorCharacteristic.notifyMotionStatus()
+      this.sensorCharacteristic.notifyMagnetStatus()
     }
   }
 }
