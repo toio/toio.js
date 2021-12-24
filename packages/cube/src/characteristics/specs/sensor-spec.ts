@@ -58,7 +58,7 @@ export class SensorSpec {
   public parse(buffer: Buffer): DataType {
     const type = buffer.readUInt8(0)
     switch (type) {
-      case 0x01:
+      case 0x01: {
         if (buffer.byteLength < 3) {
           throw new Error('parse error')
         }
@@ -79,7 +79,8 @@ export class SensorSpec {
           },
           dataType: 'sensor:motion',
         }
-      case 0x02:
+      }
+      case 0x02: {
         const id = buffer.readUInt8(1)
         let force, directionX, directionY, directionZ
         if (buffer.length > 2) {
@@ -104,7 +105,8 @@ export class SensorSpec {
           },
           dataType: 'sensor:magnet',
         }
-      case 0x03:
+      }
+      case 0x03: {
         const format = buffer.readUInt8(1)
         if (format === 1) {
           const roll = buffer.readInt16LE(2)
@@ -126,6 +128,7 @@ export class SensorSpec {
             dataType: 'sensor:attitude-quaternion',
           }
         }
+      }
     }
     throw new Error('parse error')
   }
