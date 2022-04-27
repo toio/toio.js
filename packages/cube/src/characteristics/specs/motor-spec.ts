@@ -11,13 +11,23 @@ import { createTagHandler } from '../../util/tag'
 /**
  * @hidden
  */
-export interface MotorResponse {
-  buffer: Buffer
-  data: {
-    operationId: number
-    reason: number
-  }
-}
+export type MotorResponse =
+  | {
+      buffer: Buffer
+      data: {
+        operationId: number
+        reason: number
+      }
+      dataType: 'motor:moveTo-response'
+    }
+  | {
+      buffer: Buffer
+      data: {
+        left: number
+        right: number
+      }
+      dataType: 'motor:speed-feedback'
+    }
 
 /**
  * @hidden
@@ -53,11 +63,22 @@ export interface MoveToType {
 /**
  * @hidden
  */
+export interface AccelerationMoveType {
+  buffer: Uint8Array
+  data: { straightSpeed: number; rotationSpeed: number; acceleration: number; priorityType: number; durationMs: number }
+}
+
+/**
+ * @hidden
+ */
 export class MotorSpec {
   constructor(private tag = createTagHandler()) {}
 
   public static MAX_SPEED = 115
+  public static MAX_ROTATION = 0x7fff
   public static NUMBER_OF_TARGETS_PER_OPERATION = 29 // should be in [0, 29]
+  public static ACC_PRIORITY_STRAIGHT = 0
+  public static ACC_PRIORITY_ROTATION = 1
 
   public parse(buffer: Buffer): MotorResponse {
     if (buffer.byteLength !== 3) {
@@ -74,6 +95,16 @@ export class MotorSpec {
             operationId: buffer.readUInt8(1),
             reason: buffer.readUInt8(2),
           },
+          dataType: 'motor:moveTo-response',
+        }
+      case 0xe0:
+        return {
+          buffer: buffer,
+          data: {
+            left: buffer.readUInt8(1),
+            right: buffer.readUInt8(2),
+          },
+          dataType: 'motor:speed-feedback',
         }
     }
 
@@ -136,6 +167,37 @@ export class MotorSpec {
       data: {
         targets: targets.slice(0, numTargets),
         options: { ...options, operationId: operationId },
+      },
+    }
+  }
+
+  public accelerationMove(
+    translationSpeed: number,
+    rotationSpeed: number,
+    acceleration = 0,
+    priorityType = MotorSpec.ACC_PRIORITY_STRAIGHT,
+    durationMs = 0,
+  ): AccelerationMoveType {
+    const tSign = translationSpeed > 0 ? 1 : -1
+    const rSign = rotationSpeed > 0 ? 1 : -1
+    const tDirection = translationSpeed > 0 ? 0 : 1
+    const rDirection = rotationSpeed > 0 ? 0 : 1
+    const sPower = Math.min(Math.abs(translationSpeed), MotorSpec.MAX_SPEED)
+    const rPower = Math.min(Math.abs(rotationSpeed), MotorSpec.MAX_ROTATION)
+    const rPowerLo = rPower & 0x00ff
+    const rPowerHi = (rPower & 0xff00) >> 8
+    const acc = Math.min(Math.abs(acceleration), 0xff)
+    const duration = clamp(durationMs / 10, 0, 0xff)
+    const pri = priorityType == MotorSpec.ACC_PRIORITY_STRAIGHT ? 0 : 1
+
+    return {
+      buffer: Buffer.from([5, sPower, acc, rPowerLo, rPowerHi, rDirection, tDirection, pri, duration]),
+      data: {
+        straightSpeed: tSign * sPower,
+        rotationSpeed: rSign * rPower,
+        acceleration: acc,
+        priorityType: pri,
+        durationMs: duration * 10,
       },
     }
   }

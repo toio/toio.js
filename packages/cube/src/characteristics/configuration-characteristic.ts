@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { clamp } from '../util/clamp'
 import { EventEmitter } from 'events'
 import TypedEmitter from 'typed-emitter'
 import { Characteristic } from 'noble-mac'
@@ -60,8 +61,51 @@ export class ConfigurationCharacteristic {
     }
   }
 
+  public setFlatThreshold(degree: number): void {
+    const deg = clamp(degree, 1, 45)
+    this.characteristic.write(Buffer.from([0x05, 0x00, deg]), false)
+  }
+
   public setCollisionThreshold(threshold: number): void {
-    this.characteristic.write(Buffer.from([0x06, 0x00, threshold]), false)
+    const th = clamp(threshold, 1, 10)
+    this.characteristic.write(Buffer.from([0x06, 0x00, th]), false)
+  }
+
+  public setDoubleTapIntervalThreshold(threshold: number): void {
+    const th = clamp(threshold, 0, 7)
+    this.characteristic.write(Buffer.from([0x17, 0x00, th]), false)
+  }
+
+  public setIdNotification(intervalMs: number, notificationType: number): void {
+    const interval = clamp(intervalMs / 10, 0, 0xff)
+    const type = clamp(notificationType, 0, 0xff)
+    this.characteristic.write(Buffer.from([0x18, 0x00, interval, type]), false)
+  }
+
+  public setIdMissedNotification(sensitivityMs: number): void {
+    const sensitivity = clamp(sensitivityMs / 10, 0, 0xff)
+    this.characteristic.write(Buffer.from([0x19, 0x00, sensitivity]), false)
+  }
+
+  public setMotorSpeedFeedback(enable: boolean): void {
+    const en = enable ? 1 : 0
+    this.characteristic.write(Buffer.from([0x1c, 0x00, en]), false)
+  }
+
+  public setMagnetDetection(detectType: number, intervalMs: number, notificationType: number): void {
+    const detect = clamp(detectType, 0, 2)
+    const interval = clamp(intervalMs / 20, 1, 0xff)
+    const notification = clamp(notificationType, 0, 1)
+
+    this.characteristic.write(Buffer.from([0x1b, 0x00, detect, interval, notification]), false)
+  }
+
+  public setAttitudeControl(format: number, intervalMs: number, notificationType: number): void {
+    const fmt = clamp(format, 1, 2)
+    const interval = clamp(intervalMs / 10, 0, 0xff)
+    const type = clamp(notificationType, 0, 1)
+
+    this.characteristic.write(Buffer.from([0x1d, 0x00, fmt, interval, type]), false)
   }
 
   private data2result(data: Buffer): void {

@@ -21,7 +21,7 @@ import {
   BatteryCharacteristic,
   ConfigurationCharacteristic,
 } from './characteristics'
-import { MoveToTarget, MoveToOptions } from './characteristics/specs/motor-spec'
+import { MoveToTarget, MoveToOptions, MotorSpec } from './characteristics/specs/motor-spec'
 
 function missingCharacteristicRejection(): Promise<never> {
   return Promise.reject('cannot discover the characteristic')
@@ -131,8 +131,8 @@ export class Cube {
   /**
    * Move cube
    *
-   * @param left - [-100, 100] speed of left motor
-   * @param right - [-100, 100] speed of right motor
+   * @param left - [-115, 115] speed of left motor
+   * @param right - [-115, 115] speed of right motor
    * @param duration - [0, 2550] duration in millisecond. 0 means endless.
    * @returns Promise object
    */
@@ -155,6 +155,34 @@ export class Cube {
   ): Promise<void> {
     return this.motorCharacteristic !== null
       ? this.motorCharacteristic.moveTo(targets, options)
+      : missingCharacteristicRejection()
+  }
+
+  /**
+   * Move cube to the specific coordinate and angle
+   *
+   * @param translationSpeed - [-115, 115] translational speed
+   * @param rotationSpeed - [-32767, 32767] rotational speed / unit : degree per second
+   * @param acceleration - [0, 255] moving acceleration. 0 means speed up immediately.
+   * @param priorityType - [0, 1] translation and rotation speed priorities
+   * @param durationMs - [0, 2550] duration in millisecond. 0 means endless.
+   * @returns Promise object
+   */
+  public accelerationMove(
+    translationSpeed: number,
+    rotationSpeed: number,
+    acceleration = 0,
+    priorityType = MotorSpec.ACC_PRIORITY_STRAIGHT,
+    durationMs = 0,
+  ): Promise<void> | void {
+    return this.motorCharacteristic !== null
+      ? this.motorCharacteristic.accelerationMove(
+          translationSpeed,
+          rotationSpeed,
+          acceleration,
+          priorityType,
+          durationMs,
+        )
       : missingCharacteristicRejection()
   }
 
@@ -280,6 +308,30 @@ export class Cube {
       : missingCharacteristicRejection()
   }
 
+  public getMagnetId(): Promise<{ id: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getMagnetId()
+      : missingCharacteristicRejection()
+  }
+
+  public getMagnetForce(): Promise<{ force: number; directionX: number; directionY: number; directionZ: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getMagnetForce()
+      : missingCharacteristicRejection()
+  }
+
+  public getAttitudeEuler(): Promise<{ roll: number; pitch: number; yaw: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getAttitudeEuler()
+      : missingCharacteristicRejection()
+  }
+
+  public getAttitudeQuaternion(): Promise<{ w: number; x: number; y: number; z: number }> {
+    return this.sensorCharacteristic !== null
+      ? this.sensorCharacteristic.getAttitudeQuaternion()
+      : missingCharacteristicRejection()
+  }
+
   //
   // Button
   //
@@ -320,9 +372,52 @@ export class Cube {
       : missingCharacteristicRejection()
   }
 
+  public setFlatThreshold(degree: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setFlatThreshold(degree)
+    }
+  }
+
   public setCollisionThreshold(threshold: number): void {
     if (this.configurationCharacteristic !== null) {
       this.configurationCharacteristic.setCollisionThreshold(threshold)
+    }
+  }
+
+  public setIdNotification(intervalMs: number, notificationType: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setIdNotification(intervalMs, notificationType)
+    }
+  }
+
+  public setIdMissedNotification(sensitivityMs: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setIdMissedNotification(sensitivityMs)
+    }
+  }
+
+  public setDoubleTapIntervalThreshold(threshold: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setDoubleTapIntervalThreshold(threshold)
+    }
+  }
+
+  public setMotorSpeedFeedback(enable: boolean): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setMotorSpeedFeedback(enable)
+    }
+  }
+
+  public setMagnetDetection(detectType: number, intervalMs: number, notificationType = 0): void {
+    if (this.configurationCharacteristic !== null) {
+      this.sensorCharacteristic?.setMagnetMode(detectType)
+      this.configurationCharacteristic.setMagnetDetection(detectType, intervalMs, notificationType)
+    }
+  }
+
+  public setAttitudeControl(format: number, intervalMs: number, notificationType: number): void {
+    if (this.configurationCharacteristic !== null) {
+      this.configurationCharacteristic.setAttitudeControl(format, intervalMs, notificationType)
     }
   }
 
@@ -333,7 +428,7 @@ export class Cube {
           new IdCharacteristic(characteristic, this.eventEmitter)
           break
         case MotorCharacteristic.UUID:
-          this.motorCharacteristic = new MotorCharacteristic(characteristic)
+          this.motorCharacteristic = new MotorCharacteristic(characteristic, this.eventEmitter)
           break
         case LightCharacteristic.UUID:
           this.lightCharacteristic = new LightCharacteristic(characteristic)
@@ -365,6 +460,10 @@ export class Cube {
     }
     if (this.configurationCharacteristic !== null) {
       this.configurationCharacteristic.init(bleProtocolVersion)
+    }
+    if (this.sensorCharacteristic !== null) {
+      this.sensorCharacteristic.notifyMotionStatus()
+      this.sensorCharacteristic.notifyMagnetStatus()
     }
   }
 }
