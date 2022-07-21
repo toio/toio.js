@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@toio/cube": "^1.0.0",
-    "noble-mac": "Timeular/noble-mac"
+    "@abandonware/noble": "^1.9.2-15"
   },
   "publishConfig": {
     "access": "public"
