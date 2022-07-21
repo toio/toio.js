@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Peripheral } from 'noble-mac'
+import { Peripheral } from '@abandonware/noble'
 import { Cube } from '@toio/cube'
 import { Scanner } from './scanner'
 

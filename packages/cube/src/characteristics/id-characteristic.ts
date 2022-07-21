@@ -7,7 +7,7 @@
 
 import { EventEmitter } from 'events'
 import TypedEmitter from 'typed-emitter'
-import { Characteristic } from 'noble-mac'
+import { Characteristic } from '@abandonware/noble'
 import { IdSpec, PositionIdInfo, StandardIdInfo, DataType } from './specs/id-spec'
 
 /**
