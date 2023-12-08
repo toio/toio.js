@@ -1,7 +1,7 @@
 {
   "name": "@toio/scanner",
   "description": "",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Sony Interactive Entertainment Inc.",
   "keywords": [
     "toio"
@@ -27,7 +27,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@toio/cube": "^1.0.0",
+    "@toio/cube": "^1.1.0",
     "noble-mac": "Timeular/noble-mac"
   },
   "publishConfig": {

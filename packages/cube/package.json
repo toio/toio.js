@@ -1,7 +1,7 @@
 {
   "name": "@toio/cube",
   "description": "",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Sony Interactive Entertainment Inc.",
   "keywords": [
     "toio"
@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "@types/jest": "^25.1.0",
-    "jest": "^25.1.0",
     "@types/semver": "^7.1.0",
+    "jest": "^25.1.0",
     "rimraf": "^2.6.3",
     "ts-jest": "^25.0.0",
     "typed-emitter": "^0.1.0",

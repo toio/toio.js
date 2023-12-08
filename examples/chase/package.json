@@ -1,11 +1,11 @@
 {
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "example-chase",
   "description": "Example for moving multiple cubes",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@toio/scanner": "^1.0.0"
+    "@toio/scanner": "^1.0.1"
   }
 }

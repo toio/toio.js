@@ -1,12 +1,12 @@
 {
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "example-keyboard-control",
   "description": "Example for moving a cube",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@toio/scanner": "^1.0.0",
+    "@toio/scanner": "^1.0.1",
     "keypress": "^0.2.1"
   }
 }
