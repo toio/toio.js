@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@toio/cube": "^1.0.0",
-    "@abandonware/noble": "^1.9.2-15"
+    "@abandonware/noble": "^1.9.2-25"
   },
   "publishConfig": {
     "access": "public"
